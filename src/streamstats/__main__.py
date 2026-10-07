@@ -2,10 +2,11 @@ import argparse
 from pathlib import Path
 
 from streamstats.errors import InputFileError, InvalidFormat, UnmatchedFormatError
+from streamstats.parsers import line_parse
 
 
 def main():
-    """парсинг ввода из CLI с помощью argparse и вызов функций анализа"""
+    """парсим ввод из CLI с помощью argparse и вызываем функции анализа"""
     parser = argparse.ArgumentParser(prog="streamstats")
     parser.add_argument('action', default='analyze', help='action to perform')
     parser.add_argument('inputs', metavar='INPUT', nargs='+', help='one or more input files')
@@ -23,9 +24,9 @@ def main():
                 raise UnmatchedFormatError(f"Unmatched format: {Path(filename).suffix[1:]} in {filename} and {args.format}")
 
         for file in args.inputs:
-            with open(file, 'r') as f:
+            with open(file, 'r', encoding='utf_8') as f:
                 for line in f:
-                    print(line)
+                    print(line_parse(line, args.format, args.skip_invalid))
 
     except InputFileError as e:
         parser.exit(2, f"{parser.prog}: Error: {e}\n")

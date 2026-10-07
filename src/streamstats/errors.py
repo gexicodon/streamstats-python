@@ -9,3 +9,6 @@ class UnmatchedFormatError(Exception):
 
 class InputFileError(Exception):
     pass
+
+class InvalidLineError(Exception):
+    pass
