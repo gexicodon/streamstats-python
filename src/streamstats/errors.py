@@ -12,3 +12,9 @@ class InputFileError(Exception):
 
 class InvalidLineError(Exception):
     pass
+
+class ReadFileError(Exception):
+    pass
+
+class MissingFieldError(Exception):
+    pass

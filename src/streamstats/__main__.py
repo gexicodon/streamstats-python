@@ -1,8 +1,13 @@
 import argparse
 from pathlib import Path
 
-from streamstats.errors import InputFileError, InvalidFormat, UnmatchedFormatError
-from streamstats.parsers import line_parse
+from streamstats.errors import (
+    InputFileError,
+    InvalidFormat,
+    ReadFileError,
+    UnmatchedFormatError,
+)
+from streamstats.parsers import process_csv, process_jsonl
 
 
 def main():
@@ -24,20 +29,23 @@ def main():
                 raise UnmatchedFormatError(f"Unmatched format: {Path(filename).suffix[1:]} in {filename} and {args.format}")
 
         for file in args.inputs:
-            with open(file, 'r', encoding='utf_8') as f:
-                for line in f:
-                    print(line_parse(line, args.format, args.skip_invalid))
+            if args.format == 'csv':
+                process_csv(file, args.skip_invalid)
+            elif args.format == 'jsonl':
+                process_jsonl(file, args.skip_invalid)
+            else:
+                raise InvalidFormat(f"Unsupported format: {args.format}")
 
     except InputFileError as e:
         parser.exit(2, f"{parser.prog}: Error: {e}\n")
     except InvalidFormat as e:
         parser.exit(2, f"{parser.prog}: Error: {e}\n")
     except UnmatchedFormatError as e:
-        parser.exit(2, f"{parser.prog}: Error:{e}\n")
-    # print(args.action, args.inputs, args.format, args.output, args.skip_invalid)
+        parser.exit(2, f"{parser.prog}: Error: {e}\n")
+    except ReadFileError as e:
+        parser.exit(2, f"{parser.prog}: Error: {e}\n")
 
 
-    
 
 
 if __name__ == '__main__':

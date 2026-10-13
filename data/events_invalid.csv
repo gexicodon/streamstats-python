@@ -9,3 +9,4 @@ not-a-date,ERROR,db,Bad timestamp
 2026-10-06T11:07:00+00:00,ERROR,,Empty source 2
 2026-10-06T11:08:00+00:00,INFO,worker,Valid unicode: тест
 2026-10-06T11:09:00+00:00,CRITICAL,auth,Valid critical
+not a csv,
