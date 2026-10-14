@@ -4,14 +4,20 @@ from pathlib import Path
 from streamstats.errors import (
     InputFileError,
     InvalidFormat,
-    ReadFileError,
+    InvalidLineError,
+    MissingFieldError,
     UnmatchedFormatError,
 )
 from streamstats.parsers import process_csv, process_jsonl
 
 
 def main():
-    """парсим ввод из CLI с помощью argparse и вызываем функции анализа"""
+    """Запускает основной цикл программы и обрабатывает аргументы командной строки.
+
+    Returns:
+        None. При возникновении ошибок вызывается sys.exit(2).
+    """
+
     parser = argparse.ArgumentParser(prog="streamstats")
     parser.add_argument('action', default='analyze', help='action to perform')
     parser.add_argument('inputs', metavar='INPUT', nargs='+', help='one or more input files')
@@ -42,7 +48,9 @@ def main():
         parser.exit(2, f"{parser.prog}: Error: {e}\n")
     except UnmatchedFormatError as e:
         parser.exit(2, f"{parser.prog}: Error: {e}\n")
-    except ReadFileError as e:
+    except MissingFieldError as e:
+        parser.exit(2, f"{parser.prog}: Error: {e}\n")
+    except InvalidLineError as e:
         parser.exit(2, f"{parser.prog}: Error: {e}\n")
 
 
