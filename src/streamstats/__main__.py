@@ -2,6 +2,7 @@ import argparse
 from pathlib import Path
 
 from streamstats.errors import (
+    EmptyFieldError,
     InputFileError,
     InvalidFormat,
     InvalidLineError,
@@ -34,6 +35,7 @@ def main():
             if Path(filename).suffix[1:] not in args.format:
                 raise UnmatchedFormatError(f"Unmatched format: {Path(filename).suffix[1:]} in {filename} and {args.format}")
 
+
         for file in args.inputs:
             if args.format == 'csv':
                 process_csv(file, args.skip_invalid)
@@ -51,6 +53,8 @@ def main():
     except MissingFieldError as e:
         parser.exit(2, f"{parser.prog}: Error: {e}\n")
     except InvalidLineError as e:
+        parser.exit(2, f"{parser.prog}: Error: {e}\n")
+    except EmptyFieldError as e:
         parser.exit(2, f"{parser.prog}: Error: {e}\n")
 
 
