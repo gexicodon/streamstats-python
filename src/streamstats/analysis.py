@@ -8,6 +8,8 @@ stats_top_errors_in_sources = []
 first_ts = None
 last_ts = None
 
+total_stats = {}
+
 for level in levels:
     stats_counter["valid_levels"][level] = 0
 
@@ -49,12 +51,13 @@ def find_first_last_timestamp(row):
         last_ts = current_ts
     return {"first_and_last_ts": {"first_ts": str(first_ts), "last_ts":str(last_ts)}}
 
-def analysis(row):
+def update_stats(row):
     count_valid_events()
     count_valid_levels(row["level"])
     count_valid_sources(row["source"])
     count_errors_in_sources(row)
     top = top_sources_by_errors()
     first_last = find_first_last_timestamp(row)
-    total = {**stats_counter, **top, **first_last}
-    return total
+    total_stats.clear()
+    total_stats.update({**stats_counter, **top, **first_last})
+    return total_stats

@@ -10,6 +10,9 @@ from streamstats.errors import (
     UnmatchedFormatError,
 )
 from streamstats.parsers import process_csv, process_jsonl
+from streamstats.analysis import total_stats
+from streamstats.report import stats_to_json
+
 
 
 def main():
@@ -26,6 +29,7 @@ def main():
     parser.add_argument('--output', metavar="REPORT.json", required=True, help='output report file')
     parser.add_argument('--skip-invalid', action='store_true', help='skips problematic lines by logging WARNINGs', required=False)
     args = parser.parse_args()
+
     try:
         if args.format not in ['csv', 'jsonl']:
             raise InvalidFormat(f"Unsupported format: {args.format}")
@@ -39,8 +43,10 @@ def main():
         for file in args.inputs:
             if args.format == 'csv':
                 process_csv(file, args.skip_invalid)
+                stats_to_json(total_stats, args.output)
             elif args.format == 'jsonl':
                 process_jsonl(file, args.skip_invalid)
+                stats_to_json(total_stats, args.output)
             else:
                 raise InvalidFormat(f"Unsupported format: {args.format}")
 

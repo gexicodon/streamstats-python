@@ -3,10 +3,9 @@ import json
 import sys
 from json import JSONDecodeError
 
-from streamstats.analysis import analysis, stats_counter
+from streamstats.analysis import update_stats
 from streamstats.errors import EmptyFieldError, InvalidLineError
 from streamstats.validate import validate_row
-
 
 def process(row, is_skip_invalid, current_line):
     """Основная функция обработки строки jsonl|csv, преобразованной в словарь Python
@@ -20,7 +19,7 @@ def process(row, is_skip_invalid, current_line):
 
     try:
         validate_row(row, current_line)
-        print(analysis(row))
+        update_stats(row)
 
     except EmptyFieldError as e:
         if is_skip_invalid:
