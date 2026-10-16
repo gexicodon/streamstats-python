@@ -3,8 +3,10 @@ import json
 import sys
 from json import JSONDecodeError
 
+from streamstats.analysis import count_valid_events, stats_counter
 from streamstats.errors import EmptyFieldError, InvalidLineError
 from streamstats.validate import validate_row
+from streamstats.analysis import analysis
 
 
 def process(row, is_skip_invalid, current_line):
@@ -19,7 +21,9 @@ def process(row, is_skip_invalid, current_line):
 
     try:
         validate_row(row, current_line)
-        print(row)
+        analysis(row)
+        
+        print(row, stats_counter)
 
     except EmptyFieldError as e:
         if is_skip_invalid:

@@ -1,6 +1,8 @@
 from datetime import datetime
 
+from streamstats.config import levels, required_fields
 from streamstats.errors import EmptyFieldError, InvalidLineError
+
 
 def validate_level(row, current_line):
     """ Валидирует level строки.
@@ -11,13 +13,14 @@ def validate_level(row, current_line):
     Returns:
         None
     """
+
     if "level" not in row:
         raise InvalidLineError(f'Missing field "level" at line {current_line}')
 
     level = row["level"]
     if level == '':
         raise EmptyFieldError(f'Empty field "level" at line {current_line}')
-    if level not in ("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"):
+    if level not in levels:
         raise InvalidLineError(f"Invalid level: {level} at line {current_line}")
 
 
@@ -32,7 +35,7 @@ def validate_timestamp(row, current_line):
         None
     """
 
-    if "timestamp" not in row:
+    if "timestamp" not in row or row['timestamp'] == '':
         raise InvalidLineError(f'Missing field "timestamp" at line {current_line}')
 
     timestamp = row["timestamp"]
@@ -97,6 +100,9 @@ def validate_row(row, current_line):
             f"Expected an object, got: {row} at line {current_line}"
         )
 
+    missing = [field for field in required_fields if (row.get(field) is None or row.get(field) == "")]
+    if missing:
+        raise InvalidLineError(f"Missing fields {missing} at line {current_line}")
     validate_timestamp(row, current_line)
     validate_level(row, current_line)
     validate_source(row, current_line)
