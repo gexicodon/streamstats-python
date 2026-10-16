@@ -40,7 +40,7 @@ def main():
                 raise UnmatchedFormatError(f"Unmatched format: {Path(filename).suffix[1:]} in {filename} and {args.format}")
 
 
-        for file in args.inputs:
+        for file in set(args.inputs):
             if args.format == 'csv':
                 process_csv(file, args.skip_invalid)
                 stats_to_json(total_stats, args.output)
