@@ -43,18 +43,14 @@ def main():
             print(f"Processing file: {file}")
             if args.format == 'csv':
                 process_csv(file, args.skip_invalid)
-                if args.output is None:
-                    print_stats(total_stats)
-                else:
-                    stats_to_json(total_stats, args.output)
             elif args.format == 'jsonl':
                 process_jsonl(file, args.skip_invalid)
-                if args.output is None:
-                    print_stats(total_stats)
-                else:
-                    stats_to_json(total_stats, args.output)
             else:
                 raise InvalidFormat(f"Unsupported format: {args.format}")
+        if args.output is None:
+            print_stats(total_stats)
+        else:
+            stats_to_json(total_stats, args.output)
 
     except InputFileError as e:
         parser.exit(2, f"{parser.prog}: Error: {e}\n")
