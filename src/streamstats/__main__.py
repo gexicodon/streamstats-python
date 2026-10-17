@@ -1,6 +1,7 @@
 import argparse
 from pathlib import Path
 
+from streamstats.analysis import total_stats
 from streamstats.errors import (
     EmptyFieldError,
     InputFileError,
@@ -10,9 +11,7 @@ from streamstats.errors import (
     UnmatchedFormatError,
 )
 from streamstats.parsers import process_csv, process_jsonl
-from streamstats.analysis import total_stats
-from streamstats.report import stats_to_json
-
+from streamstats.report import stats_to_json, print_stats
 
 
 def main():
@@ -26,7 +25,7 @@ def main():
     parser.add_argument('action', default='analyze', help='action to perform')
     parser.add_argument('inputs', metavar='INPUT', nargs='+', help='one or more input files')
     parser.add_argument('--format', required=True, help='input file format')
-    parser.add_argument('--output', metavar="REPORT.json", required=True, help='output report file')
+    parser.add_argument('--output', metavar="REPORT.json", required=False, help='output report file')
     parser.add_argument('--skip-invalid', action='store_true', help='skips problematic lines by logging WARNINGs', required=False)
     args = parser.parse_args()
 
@@ -41,12 +40,19 @@ def main():
 
 
         for file in set(args.inputs):
+            print(f"Processing file: {file}")
             if args.format == 'csv':
                 process_csv(file, args.skip_invalid)
-                stats_to_json(total_stats, args.output)
+                if args.output is None:
+                    print_stats(total_stats)
+                else:
+                    stats_to_json(total_stats, args.output)
             elif args.format == 'jsonl':
                 process_jsonl(file, args.skip_invalid)
-                stats_to_json(total_stats, args.output)
+                if args.output is None:
+                    print_stats(total_stats)
+                else:
+                    stats_to_json(total_stats, args.output)
             else:
                 raise InvalidFormat(f"Unsupported format: {args.format}")
 

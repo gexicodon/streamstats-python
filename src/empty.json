@@ -1,0 +1,18 @@
+{
+    "valid_events": 0,
+    "invalid_events": 0,
+    "valid_levels": {
+        "DEBUG": 0,
+        "INFO": 0,
+        "WARNING": 0,
+        "ERROR": 0,
+        "CRITICAL": 0
+    },
+    "valid_sources": {},
+    "errors_count_in_sources": {},
+    "top_sources_by_errors": {},
+    "first_and_last_ts": {
+        "first_ts": null,
+        "last_ts": null
+    }
+}

@@ -3,9 +3,10 @@ import json
 import sys
 from json import JSONDecodeError
 
-from streamstats.analysis import update_stats
+from streamstats.analysis import count_invalid_events, update_stats
 from streamstats.errors import EmptyFieldError, InvalidLineError
 from streamstats.validate import validate_row
+
 
 def process(row, is_skip_invalid, current_line):
     """Основная функция обработки строки jsonl|csv, преобразованной в словарь Python
@@ -22,11 +23,13 @@ def process(row, is_skip_invalid, current_line):
         update_stats(row)
 
     except EmptyFieldError as e:
+        count_invalid_events()
         if is_skip_invalid:
             print(f"WARNING! {e}", file=sys.stderr)
         else:
             raise
     except InvalidLineError as e:
+        count_invalid_events()
         if is_skip_invalid:
             print(f"WARNING! {e}", file=sys.stderr)
         else:
@@ -66,7 +69,7 @@ def process_jsonl(jsonl_file, is_skip_invalid):
 
             except JSONDecodeError as e:
                 message = f"Error of reading line: {line.rstrip()} at line {current_line}"
-
+                count_invalid_events()
                 if is_skip_invalid:
                     print(f"WARNING! {message}", file=sys.stderr)
                 else:

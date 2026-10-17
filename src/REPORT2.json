@@ -1,35 +1,38 @@
 {
     "valid_events": 6,
+    "invalid_events": 5,
     "valid_levels": {
         "DEBUG": 0,
-        "INFO": 3,
+        "INFO": 2,
         "WARNING": 1,
         "ERROR": 1,
-        "CRITICAL": 1
+        "CRITICAL": 2
     },
     "valid_sources": {
-        "api": 2,
+        "api": 1,
         "db": 1,
         "web": 1,
         "worker": 1,
-        "auth": 1
+        "auth": 1,
+        "глаголица": 1
     },
     "errors_count_in_sources": {
         "api": 0,
         "db": 1,
         "web": 0,
         "worker": 0,
-        "auth": 1
+        "auth": 1,
+        "глаголица": 1
     },
     "top_sources_by_errors": {
         "db": 1,
         "auth": 1,
+        "глаголица": 1,
         "api": 0,
-        "web": 0,
-        "worker": 0
+        "web": 0
     },
     "first_and_last_ts": {
-        "first_ts": "2026-10-06 11:00:00+00:00",
-        "last_ts": "2026-10-06 11:09:00+00:00"
+        "first_ts": "2026-10-06 13:00:00+00:00",
+        "last_ts": "2026-10-06 13:09:00+00:00"
     }
 }
