@@ -23,7 +23,7 @@ def main():
     parser.add_argument('action', default='analyze', help='action to perform')
     parser.add_argument('inputs', metavar='INPUT', nargs='+', help='one or more input files')
     parser.add_argument('--format', required=True, help='input file format')
-    parser.add_argument('--output', metavar="REPORT.json", required=False, help='output report file')
+    parser.add_argument('--output', metavar="REPORT.[json|csv]", required=False, help='output report file')
     parser.add_argument('--skip-invalid', action='store_true', help='skips problematic lines by logging WARNINGs', required=False)
     args = parser.parse_args()
 
