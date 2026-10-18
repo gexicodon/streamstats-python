@@ -1,23 +1,23 @@
 class StreamStatsError(Exception):
     """Базовая ошибка приложения"""
 
-class InvalidFormat(Exception):
+class InvalidFormat(StreamStatsError):
     """Ошибка неверного формата файла"""
 
-class UnmatchedFormatError(Exception):
+class UnmatchedFormatError(StreamStatsError):
     """Ошибка ситуации, когда файл формата csv, а в CLI мы говорим, что это jsonl и наоборот"""
 
-class InputFileError(Exception):
+class InputFileError(StreamStatsError):
     """Ошибка: не найден файл"""
 
-class InvalidLineError(Exception):
+class InvalidLineError(StreamStatsError):
     """Ошибка невалидной строчки"""
 
 
-class MissingFieldError(Exception):
+class MissingFieldError(StreamStatsError):
     """Ошибка пропущенного поля"""
 
-class EmptyFieldError(Exception):
+class EmptyFieldError(StreamStatsError):
     """Ошибка пустой строки"""
 
 

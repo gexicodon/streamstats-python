@@ -3,15 +3,13 @@ from pathlib import Path
 
 from streamstats.analysis import total_stats
 from streamstats.errors import (
-    EmptyFieldError,
     InputFileError,
     InvalidFormat,
-    InvalidLineError,
-    MissingFieldError,
+    StreamStatsError,
     UnmatchedFormatError,
 )
 from streamstats.parsers import process_csv, process_jsonl
-from streamstats.report import stats_to_json, print_stats
+from streamstats.report import print_stats, stats_to_csv, stats_to_json
 
 
 def main():
@@ -50,23 +48,15 @@ def main():
         if args.output is None:
             print_stats(total_stats)
         else:
-            stats_to_json(total_stats, args.output)
+            if Path(args.output).suffix.lower() == '.csv':
+                stats_to_csv(total_stats, args.output)
+            elif Path(args.output).suffix.lower() == '.json':
+                stats_to_json(total_stats, args.output)
+            else:
+                raise InvalidFormat(f"Unsupported format: {args.output}")
 
-    except InputFileError as e:
+    except StreamStatsError as e:
         parser.exit(2, f"{parser.prog}: Error: {e}\n")
-    except InvalidFormat as e:
-        parser.exit(2, f"{parser.prog}: Error: {e}\n")
-    except UnmatchedFormatError as e:
-        parser.exit(2, f"{parser.prog}: Error: {e}\n")
-    except MissingFieldError as e:
-        parser.exit(2, f"{parser.prog}: Error: {e}\n")
-    except InvalidLineError as e:
-        parser.exit(2, f"{parser.prog}: Error: {e}\n")
-    except EmptyFieldError as e:
-        parser.exit(2, f"{parser.prog}: Error: {e}\n")
-
-
-
 
 if __name__ == '__main__':
     main()
