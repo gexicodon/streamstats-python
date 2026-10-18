@@ -1,7 +1,6 @@
-import pytest
 import json
 
-import streamstats.analysis as analysis
+from streamstats import analysis
 from streamstats.parsers import process_csv, process_jsonl
 from streamstats.report import stats_to_json
 

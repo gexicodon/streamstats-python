@@ -1,6 +1,8 @@
 import pytest
-import streamstats.analysis as analysis
+
+from streamstats import analysis
 from streamstats.config import levels
+
 
 @pytest.fixture(autouse=True)
 def clean_stats():
