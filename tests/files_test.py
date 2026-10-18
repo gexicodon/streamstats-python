@@ -1,7 +1,7 @@
-import pytest
 
-import streamstats.analysis as analysis
+from streamstats import analysis
 from streamstats.parsers import process_csv, process_jsonl
+
 
 def test_multiple_files_csv(tmp_path):
     file1 = tmp_path / "file1.csv"
@@ -38,3 +38,4 @@ def test_empty_file_jsonl(tmp_path):
     process_csv(file, is_skip_invalid=False)
 
     assert analysis.total_stats == {}
+

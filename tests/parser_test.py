@@ -1,9 +1,9 @@
 import pytest
 
-import streamstats.analysis as analysis
-from streamstats.config import  levels
+from streamstats import analysis
 from streamstats.errors import InvalidLineError
 from streamstats.parsers import process_csv, process_jsonl
+
 
 def test_process_csv_success(tmp_path):
     """тестим, что dictreader правильно читает csv и передаёт в анализатор строки в виде словарей"""
